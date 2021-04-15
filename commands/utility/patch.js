@@ -7,8 +7,8 @@ module.exports = {
         repository.getLastPatchVersion().then(response => {
             if (response !== null) {
                 message.channel.send(`Estamos no patch ${response}`);
-                message.channel.send(`LOL: https://br.leagueoflegends.com/pt-br/news/game-updates/notas-da-atualizacao-${patchVersion.replace('.', '-')}/`);
-				message.channel.send(`TFT: https://br.leagueoflegends.com/pt-br/news/game-updates/notas-da-atualizacao-${patchVersion.replace('.', '-')}-do-teamfight-tactics/`);
+                message.channel.send(`LOL: https://br.leagueoflegends.com/pt-br/news/game-updates/notas-da-atualizacao-${response.replace('.', '-')}/`);
+				message.channel.send(`TFT: https://br.leagueoflegends.com/pt-br/news/game-updates/notas-da-atualizacao-${response.replace('.', '-')}-do-teamfight-tactics/`);
             }
         });
     },
