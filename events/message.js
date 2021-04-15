@@ -1,12 +1,12 @@
-const {prefix} = require('../config.json');
+// const {prefix} = require('../config.json');
 const Discord = require('discord.js');
 
 module.exports = {
 	name: 'message',
 	execute(message, client) {
-		if (!message.content.startsWith(prefix) || message.author.bot) return;
+		if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
 
-		const args = message.content.slice(prefix.length).trim().split(/ +/);
+		const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
 		const commandName = args.shift().toLowerCase();
 
 		const command = client.commands.get(commandName)
@@ -29,7 +29,7 @@ module.exports = {
 			let reply = `You didn't provide any arguments, ${message.author}!`;
 
 			if (command.usage) {
-				reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+				reply += `\nThe proper usage would be: \`${process.env.PREFIX}${command.name} ${command.usage}\``;
 			}
 
 			return message.channel.send(reply);
