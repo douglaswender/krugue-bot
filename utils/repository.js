@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 const headers = {
-    'x-hasura-admin-secret': 'jXQlD41n04b2CRALipW5VlSuu5Jc28xiYLWHhHNl82tbkbqarkcRp3scC13FZqls'
+    'x-hasura-admin-secret': process.env.HASURA_TOKEN
 };
 module.exports = {
     async postLastPatchVersion(newVersion) {

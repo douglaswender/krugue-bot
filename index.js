@@ -1,8 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-// const { prefix, token } = require('./config.json');
+require('dotenv').config()
 
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
