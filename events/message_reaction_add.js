@@ -26,6 +26,7 @@ module.exports = {
             try {
                 //console.log(role);
                 await member.roles.set([role.id]);
+                console.log('Cargo atribuido com sucesso!');
             } catch (err) {
                 console.log('Erro ao adicionar o cargo: ', err);
             }
