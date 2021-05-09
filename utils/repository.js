@@ -5,37 +5,35 @@ const headers = {
     'x-hasura-admin-secret': process.env.HASURA_TOKEN
 };
 module.exports = {
-    async postLastPatchVersion(newVersion) {
+    async postLastPatchVersion(newVersion, database) {
+        //console.log('postLastPatchVersion');
         try {
-            console.log('newVersion', newVersion);
-            const response = await axios.post(`https://cosmic-muskox-80.hasura.app/api/rest/version?version_id=${newVersion}`, {}, {
-                headers: headers
+            const response = await database.ref('version/').set({
+                versionName: newVersion
             });
-            console.log('Response: ', response);
             return response;
         } catch (error) {
+            console.error(error);
             return error;
         }
     },
-    async getAllPatchVersions() {
-        try {
-            const response = await axios.get("https://cosmic-muskox-80.hasura.app/api/rest/version", {
-                headers: headers
+    async getAllPatchVersions(database) {
+        try {            
+            const storedVersion = database.ref('version/versionName');
+            let lastVersion = storedVersion.get().then((snapshot)=>{
+                if(snapshot.exists()){
+                    return snapshot.val();
+                } else {
+                    console.log('no data available');
+                    return "Ainda não tem versão cadastrada"
+                }
             });
-            //console.log(response.data);
-            const versions = response.data.version;
-            let lastVersion;
-            if (versions.length > 0) {
-                lastVersion = versions[versions.length - 1].version_name;
-            } else {
-                lastVersion = "Ainda não tem versão cadastrada";
-            }
             return lastVersion;
         } catch (error) {
             return error;
         }
     },
-    async updateVersion(){
+    async updateVersion() {
 
     },
     async getLastPatchVersion() {
@@ -44,18 +42,6 @@ module.exports = {
             var $ = cheerio.load(response.data);
             var notes = $('.style__List-sc-3mnuh-2 li a article div div h2').first().text();
             const data = notes.split(' ');
-            // await this.getAllPatchVersions().then(async lastVersion => {
-            //     console.log('lastVersion: ', lastVersion);
-            //     if (data[data.length - 1] !== lastVersion) {
-            //         console.log('Versões diferentes, atualizando...');
-            //         this.postLastPatchVersion(data[data.length - 1]).then(postResponse => {
-            //             console.log(postResponse);
-            //         });
-            //         typeReturn = data[data.length - 1];
-            //     } else{
-            //         typeReturn = lastVersion;
-            //     }
-            // });
             return data[data.length - 1];
 
         } catch (error) {

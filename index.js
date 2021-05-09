@@ -2,6 +2,8 @@ const fs = require('fs');
 const Discord = require('discord.js');
 require('dotenv').config()
 
+const database = require('./utils/firebase-config');
+
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 client.commands = new Discord.Collection();
@@ -21,7 +23,7 @@ for (const folder of commandFolders) {
 for (const file of eventFiles) {
   const event = require(`./events/${file}`);
   if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args, client));
+    client.once(event.name, (...args) => event.execute(...args, client, database));
   } else {
     client.on(event.name, (...args) => event.execute(...args, client));
   }
